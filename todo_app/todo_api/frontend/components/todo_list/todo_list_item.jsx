@@ -23,15 +23,15 @@ class TodoListItem extends React.Component {
       { done: !this.props.todo.done }
     );
 
-     this.props.receiveTodo(toggledTodo);
+     this.props.updateTodo(toggledTodo);
   }
 
   render() {
-    const { todo , updateTodo } = this.props;
+    const { todo , updateTodo, deleteTodo } = this.props;
     const { title, done } = todo;
     let detail;
     if (this.state.detail) {
-      detail = <TodoDetailViewContainer todo={ todo } />;
+      detail = <TodoDetailViewContainer todo={ todo } deleteTodo={ deleteTodo }/>;
     }
 
     return (

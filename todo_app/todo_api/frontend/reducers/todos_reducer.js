@@ -11,7 +11,9 @@ const todosReducer = (state = {}, action) => {
   switch(action.type){
     case RECEIVE_TODOS:
       nextState = {};
-      action.todos.forEach(todo => nextState[todo.id] = todo);
+      action.todos.forEach(todo => {
+        nextState[todo.id] = todo;
+      });
       return nextState;
     case RECEIVE_TODO:
       const newTodo = {[action.todo.id]: action.todo};

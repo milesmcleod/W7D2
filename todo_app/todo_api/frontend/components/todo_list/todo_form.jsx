@@ -1,4 +1,4 @@
-import { uniqueId } from '../../util/id_generator'
+import { uniqueId } from '../../util/id_generator';
 import React from 'react';
 
 class TodoForm extends React.Component {
@@ -20,24 +20,29 @@ class TodoForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const todo = Object.assign({}, this.state, { id: uniqueId() });
-    this.props.receiveTodo(todo);
-    this.setState({
-      title: "",
-      body: ""
-    }); // reset form
+    this.props.createTodo(todo).then(
+      this.setState({
+        title: "",
+        body: ""
+      }) // reset form
+    );
   }
 
   render() {
     return (
       <form className="todo-form" onSubmit={this.handleSubmit}>
+        <ul>
+          {
+            this.props.errors.map(err => <li>{err}</li>)
+          }
+        </ul>
         <label>Title:
           <input
             className="input"
             ref="title"
             value={this.state.title}
             placeholder="buy milk"
-            onChange={this.update('title')}
-            required/>
+            onChange={this.update('title')}/>
         </label>
         <label>Body:
           <textarea
@@ -47,13 +52,12 @@ class TodoForm extends React.Component {
             value={this.state.body}
             rows='5'
             placeholder="2% or whatever is on sale!"
-            onChange={this.update('body')}
-            required></textarea>
+            onChange={this.update('body')}></textarea>
         </label>
         <button className="create-button">Create Todo!</button>
       </form>
     );
   }
-};
+}
 
 export default TodoForm;

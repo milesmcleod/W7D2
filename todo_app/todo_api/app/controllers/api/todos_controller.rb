@@ -30,8 +30,7 @@ class Api::TodosController < ApplicationController
   def destroy
     @todo = Todo.find(params[:id])
     if @todo.destroy
-      @todos = Todo.all
-      render json: @todos
+      render json: @todo
     else
       render json: @todo.errors.full_messages, status: 404
     end
