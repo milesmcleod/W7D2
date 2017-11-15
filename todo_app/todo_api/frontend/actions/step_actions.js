@@ -23,3 +23,8 @@ export const fetchSteps = () => (dispatch) => (
   StepAPIUtil.fetchSteps()
   .then((response) => dispatch(receiveSteps(response)))
 );
+
+export const createStep = (step) => (dispatch) => (
+  StepAPIUtil.createStep(step)
+  .then((response) => dispatch(receiveStep(response)))
+);

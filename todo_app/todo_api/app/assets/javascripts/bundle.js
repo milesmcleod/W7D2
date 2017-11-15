@@ -3577,7 +3577,7 @@ exports.connect = _connect2["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchSteps = exports.removeStep = exports.receiveStep = exports.receiveSteps = exports.REMOVE_STEP = exports.RECEIVE_STEP = exports.RECEIVE_STEPS = undefined;
+exports.createStep = exports.fetchSteps = exports.removeStep = exports.receiveStep = exports.receiveSteps = exports.REMOVE_STEP = exports.RECEIVE_STEP = exports.RECEIVE_STEPS = undefined;
 
 var _step_api_util = __webpack_require__(337);
 
@@ -3614,6 +3614,14 @@ var fetchSteps = exports.fetchSteps = function fetchSteps() {
   return function (dispatch) {
     return _step_api_util2.default.fetchSteps().then(function (response) {
       return dispatch(receiveSteps(response));
+    });
+  };
+};
+
+var createStep = exports.createStep = function createStep(step) {
+  return function (dispatch) {
+    return _step_api_util2.default.createStep(step).then(function (response) {
+      return dispatch(receiveStep(response));
     });
   };
 };
@@ -12037,11 +12045,10 @@ var StepForm = function (_React$Component) {
     value: function handleSubmit(e) {
       e.preventDefault();
       var step = Object.assign({}, this.state, { id: (0, _id_generator.uniqueId)() });
-      this.props.receiveStep(step);
-      this.setState({
+      this.props.createStep(step).then(this.setState({
         title: "",
         body: ""
-      }); // reset form
+      })); // reset form
     }
   }, {
     key: 'render',
@@ -12116,7 +12123,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var StepList = function StepList(_ref) {
   var steps = _ref.steps,
       todo_id = _ref.todo_id,
-      receiveStep = _ref.receiveStep;
+      receiveStep = _ref.receiveStep,
+      createStep = _ref.createStep;
 
   var stepItems = steps.map(function (step) {
     return _react2.default.createElement(_step_list_item_container2.default, {
@@ -12132,7 +12140,7 @@ var StepList = function StepList(_ref) {
       { className: 'step-list' },
       stepItems
     ),
-    _react2.default.createElement(_step_form2.default, { todo_id: todo_id, receiveStep: receiveStep })
+    _react2.default.createElement(_step_form2.default, { todo_id: todo_id, createStep: createStep })
   );
 };
 
@@ -12174,6 +12182,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     receiveStep: function receiveStep(step) {
       return dispatch((0, _step_actions.receiveStep)(step));
+    },
+    createStep: function createStep(step) {
+      return dispatch((0, _step_actions.createStep)(step));
     }
   };
 };
@@ -12306,6 +12317,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, _ref) {
     receiveStep: function receiveStep(step) {
       return dispatch((0, _step_actions.receiveStep)(step));
     }
+
   };
 };
 // Actions
@@ -28386,6 +28398,15 @@ var StepAPIUtil = {
     return $.ajax({
       method: "GET",
       url: "/api/steps/"
+    });
+  },
+  createStep: function createStep(step) {
+    return $.ajax({
+      method: 'POST',
+      url: 'api/steps/',
+      data: {
+        step: step
+      }
     });
   }
 };

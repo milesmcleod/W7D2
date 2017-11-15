@@ -5,6 +5,16 @@ const StepAPIUtil = {
       method: "GET",
       url: "/api/steps/",
     });
+  },
+
+  createStep(step) {
+    return $.ajax({
+      method: 'POST',
+      url: 'api/steps/',
+      data: {
+        step: step
+      }
+    });
   }
 
 };
