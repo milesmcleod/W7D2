@@ -12,7 +12,8 @@ class TodoList extends React.Component {
       createTodo,
       receiveTodo,
       deleteTodo,
-      updateTodo
+      updateTodo,
+      fetchSteps
     } = this.props;
     const todoItems = todos.map(todo => (
         <TodoListItem
@@ -38,6 +39,7 @@ class TodoList extends React.Component {
 
   componentDidMount () {
     this.props.fetchTodos();
+    this.props.fetchSteps();
   }
 }
 

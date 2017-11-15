@@ -17,7 +17,7 @@ const StepList = ({ steps, todo_id, receiveStep }) => {
       </ul>
       <StepForm todo_id={ todo_id } receiveStep={ receiveStep } />
     </div>
-  )
+  );
 };
 
 export default StepList;

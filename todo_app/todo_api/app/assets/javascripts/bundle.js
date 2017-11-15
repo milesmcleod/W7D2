@@ -3577,6 +3577,14 @@ exports.connect = _connect2["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.fetchSteps = exports.removeStep = exports.receiveStep = exports.receiveSteps = exports.REMOVE_STEP = exports.RECEIVE_STEP = exports.RECEIVE_STEPS = undefined;
+
+var _step_api_util = __webpack_require__(337);
+
+var _step_api_util2 = _interopRequireDefault(_step_api_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var RECEIVE_STEPS = exports.RECEIVE_STEPS = "RECEIVE_STEPS";
 var RECEIVE_STEP = exports.RECEIVE_STEP = "RECEIVE_STEP";
 var REMOVE_STEP = exports.REMOVE_STEP = "REMOVE_STEP";
@@ -3599,6 +3607,14 @@ var removeStep = exports.removeStep = function removeStep(step) {
   return {
     type: REMOVE_STEP,
     step: step
+  };
+};
+
+var fetchSteps = exports.fetchSteps = function fetchSteps() {
+  return function (dispatch) {
+    return _step_api_util2.default.fetchSteps().then(function (response) {
+      return dispatch(receiveSteps(response));
+    });
   };
 };
 
@@ -12583,7 +12599,8 @@ var TodoList = function (_React$Component) {
           createTodo = _props.createTodo,
           receiveTodo = _props.receiveTodo,
           deleteTodo = _props.deleteTodo,
-          updateTodo = _props.updateTodo;
+          updateTodo = _props.updateTodo,
+          fetchSteps = _props.fetchSteps;
 
       var todoItems = todos.map(function (todo) {
         return _react2.default.createElement(_todo_list_item2.default, {
@@ -12611,6 +12628,7 @@ var TodoList = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.props.fetchTodos();
+      this.props.fetchSteps();
     }
   }]);
 
@@ -12638,11 +12656,12 @@ var _todo_list2 = _interopRequireDefault(_todo_list);
 
 var _todo_actions = __webpack_require__(46);
 
+var _step_actions = __webpack_require__(29);
+
 var _selectors = __webpack_require__(71);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Actions
 var mapStateToProps = function mapStateToProps(state) {
   return {
     todos: (0, _selectors.allTodos)(state),
@@ -12650,6 +12669,9 @@ var mapStateToProps = function mapStateToProps(state) {
     state: state
   };
 };
+
+// Actions
+
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
@@ -12667,6 +12689,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     fetchTodos: function fetchTodos() {
       return dispatch((0, _todo_actions.fetchTodos)());
+    },
+    fetchSteps: function fetchSteps() {
+      return dispatch((0, _step_actions.fetchSteps)());
     }
   };
 };
@@ -12977,6 +13002,8 @@ var _store2 = _interopRequireDefault(_store);
 
 var _todo_actions = __webpack_require__(46);
 
+var _step_actions = __webpack_require__(29);
+
 var _root = __webpack_require__(129);
 
 var _root2 = _interopRequireDefault(_root);
@@ -12989,6 +13016,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.store = store;
   window.fetchTodos = _todo_actions.fetchTodos;
   window.createTodo = _todo_actions.createTodo;
+  window.fetchSteps = _step_actions.fetchSteps;
   var root = document.getElementById('content');
   _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: store }), root);
 });
@@ -28342,6 +28370,27 @@ var errorsReducer = function errorsReducer() {
 };
 
 exports.default = errorsReducer;
+
+/***/ }),
+/* 337 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var StepAPIUtil = {
+  fetchSteps: function fetchSteps() {
+    return $.ajax({
+      method: "GET",
+      url: "/api/steps/"
+    });
+  }
+};
+
+exports.default = StepAPIUtil;
 
 /***/ })
 /******/ ]);
